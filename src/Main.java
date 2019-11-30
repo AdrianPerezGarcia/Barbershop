@@ -16,6 +16,7 @@ public class Main {
 		;}
 	
 	public static void main(String[] args) throws InterruptedException {
+		
 		Scanner sc = new Scanner(System.in);
 		
 		int nBarberos = sc.nextInt();
@@ -31,6 +32,7 @@ public class Main {
 		Cliente.barberia = b;
 		Barbero.barberia = b;
 		b.setNumeroSillas(sc.nextInt());
+		
 		sc.close();
 		
 		Barbero[] barberos = new Barbero[nBarberos];
