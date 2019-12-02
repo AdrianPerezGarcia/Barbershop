@@ -48,9 +48,7 @@ public class Main {
 			clientes[j-1].start();
 		}
 		
-		System.out.println("Que comienze la simulación");
 		Thread.sleep(tiempoSimulacion*1000);
-		System.out.println("Que acabe la simulación");
 		
 		for (int j=0; j<nClientes; j++){
 			clientes[j].interrupt();

@@ -10,7 +10,7 @@ public class Cliente implements Runnable {
 		return this.identificador;
 	}
 
-	public boolean waiting = false;
+	public boolean esperando = false;
 	
 	public static NormalDistribution distribucionNormal;
 
@@ -21,13 +21,15 @@ public class Cliente implements Runnable {
 
 	@Override
 	public void run() {
-		while(true) {
-			try{
-				Thread.sleep((long)distribucionNormal.getMean());
-			}catch (InterruptedException e) {}
-			System.out.println("El cliente " +this.identificador+ " llega a la barbería.");
-			barberia.llegaCliente(this);
+		try{
+			while(true) {
+				Thread.sleep((long)Math.abs(distribucionNormal.sample()));
+				if (this.esperando == false) barberia.llegaCliente(this);
+			}
+		}catch(InterruptedException e) {
+			System.out.println("El cliente " +this.identificador+ " ha sido destruido.");
 		}
+		
 	}
 	
 }

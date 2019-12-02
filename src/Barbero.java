@@ -19,26 +19,28 @@ public class Barbero extends Thread{
 	}
 
 	public void run() {
-		while(true) {
-			Cliente cliente = barberia.buscarCliente(this);
-			try {
+		try {
+			while(true) {
+				Cliente cliente = barberia.buscarCliente(this);
 				this.cortarPelo(cliente);
-			} catch (InterruptedException e) {}
-		}	
-	}
-
-	public void interrupt() {
-		System.out.println("El barbero " +this.charidentificador+ " ha sido destruido.");
-		
+			}
+		}catch (InterruptedException e) {
+			System.out.println("El barbero " +this.charidentificador+ " ha sido destruido.");
+		}
 	}
 	
 	public void cortarPelo(Cliente cliente) throws InterruptedException {
-		Thread.sleep((long)distribucionExponencial.getMean());
+		Thread.sleep((long)Math.abs(distribucionExponencial.sample()));
 		System.out.println("El barbero " +this.charidentificador+ " ha cortado el pelo al cliente " +cliente.getIdentificador()+ ".");
+		cliente.esperando = false;
 	}
 	
 	public char getCharidentificador() {
 		return this.charidentificador;
+	}
+	
+	public int getIdentificador() {
+		return this.identificador;
 	}
 
 }

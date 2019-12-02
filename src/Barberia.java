@@ -11,6 +11,8 @@ public class Barberia {
 	
 	public int clientesEsperandoNum = 0;
 	
+	public static int barberosEsperandoNum = 0;
+	
 	public Queue<Cliente> clientesEsperando = new LinkedList<Cliente>();
 	
 	private Barberia() {}
@@ -32,12 +34,14 @@ public class Barberia {
 	}
 	
 	public synchronized Cliente buscarCliente(Barbero barbero) {
+		barberosEsperandoNum++;
 		while(clientesEsperandoNum == 0) {
 			try {
 				System.out.println("El barbero " +barbero.getCharidentificador()+ " se pone a dormir.");
 				wait();
 			} catch (InterruptedException e) {};
 		}
+		barberosEsperandoNum--;
 		return cogerCliente(barbero);
 	}
 	
@@ -61,9 +65,10 @@ public class Barberia {
 	}
 
 	private synchronized void aEsperar(Cliente cliente) {
+		if(barberosEsperandoNum == 0) System.out.println("El cliente " +cliente.getIdentificador()+ " se sienta en una silla de espera.");
 		clientesEsperandoNum++;
 		clientesEsperando.add(cliente);
-		System.out.println("El cliente " +cliente.getIdentificador()+ " se sienta en una silla de espera.");
+		cliente.esperando=true;
 		notifyAll();
 	}
 
