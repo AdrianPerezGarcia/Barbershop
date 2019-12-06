@@ -18,6 +18,20 @@ public class Barbero extends Thread{
 		System.out.println("El barbero " +this.charidentificador+ " se ha creado.");
 	}
 
+	public int getIdentificador() {
+		return this.identificador;
+	}
+
+	public char getCharidentificador() {
+		return this.charidentificador;
+	}
+
+	public void cortarPelo(Cliente cliente) throws InterruptedException {
+		Thread.sleep((long)Math.abs(distribucionExponencial.sample()));
+		System.out.println("El barbero " +this.charidentificador+ " ha cortado el pelo al cliente " +cliente.getIdentificador()+ ".");
+		cliente.esperando = false;
+	}
+
 	public void run() {
 		try {
 			while(true) {
@@ -27,20 +41,6 @@ public class Barbero extends Thread{
 		}catch (InterruptedException e) {
 			System.out.println("El barbero " +this.charidentificador+ " ha sido destruido.");
 		}
-	}
-	
-	public void cortarPelo(Cliente cliente) throws InterruptedException {
-		Thread.sleep((long)Math.abs(distribucionExponencial.sample()));
-		System.out.println("El barbero " +this.charidentificador+ " ha cortado el pelo al cliente " +cliente.getIdentificador()+ ".");
-		cliente.esperando = false;
-	}
-	
-	public char getCharidentificador() {
-		return this.charidentificador;
-	}
-	
-	public int getIdentificador() {
-		return this.identificador;
 	}
 
 }

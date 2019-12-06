@@ -14,9 +14,9 @@ public class Cliente implements Runnable {
 	
 	public static NormalDistribution distribucionNormal;
 
-	public Cliente(int j) {
-		this.identificador = j;
-		System.out.println("El cliente " +this.identificador+ " se ha creado");;
+	public Cliente(int i) {
+		this.identificador = i;
+		System.out.println("El cliente " +this.identificador+ " se ha creado.");
 	}
 
 	@Override

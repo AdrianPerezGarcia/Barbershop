@@ -29,32 +29,14 @@ public class Barberia {
 		 return INSTANCE;
 	}
 
-	public void setBarberos(Barbero[] barberos) {
-		this.barberos=barberos;
-	}
-	
-	public synchronized Cliente buscarCliente(Barbero barbero) {
-		barberosEsperandoNum++;
-		while(clientesEsperandoNum == 0) {
-			try {
-				System.out.println("El barbero " +barbero.getCharidentificador()+ " se pone a dormir.");
-				wait();
-			} catch (InterruptedException e) {};
-		}
-		barberosEsperandoNum--;
-		return cogerCliente(barbero);
-	}
-	
-	public synchronized Cliente cogerCliente(Barbero barbero) {
-		System.out.println("El barbero " +barbero.getCharidentificador()+ " atiende al cliente " +clientesEsperando.peek().getIdentificador()+ ".");
-		this.clientesEsperandoNum--;
-		return clientesEsperando.poll();
-	}
-
 	public void setNumeroSillas(int num) {
 		this.numSillas = num;
 	}
 
+	public void setBarberos(Barbero[] barberos) {
+		this.barberos=barberos;
+	}
+	
 	public void llegaCliente(Cliente cliente) {
 		System.out.println("El cliente " +cliente.getIdentificador()+ " llega a la barbería.");
 		if(clientesEsperandoNum == numSillas) {
@@ -70,6 +52,24 @@ public class Barberia {
 		clientesEsperando.add(cliente);
 		cliente.esperando=true;
 		notifyAll();
+	}
+
+	public synchronized Cliente buscarCliente(Barbero barbero) {
+		barberosEsperandoNum++;
+		if (clientesEsperandoNum == 0) System.out.println("El barbero " +barbero.getCharidentificador()+ " se pone a dormir.");
+		while(clientesEsperandoNum == 0) {
+			try {
+				wait();
+			} catch (InterruptedException e) {};
+		}
+		barberosEsperandoNum--;
+		return cogerCliente(barbero);
+	}
+
+	public synchronized Cliente cogerCliente(Barbero barbero) {
+		System.out.println("El barbero " +barbero.getCharidentificador()+ " atiende al cliente " +clientesEsperando.peek().getIdentificador()+ ".");
+		this.clientesEsperandoNum--;
+		return clientesEsperando.poll();
 	}
 
 }
